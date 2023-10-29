@@ -26,7 +26,7 @@ var io = require('socket.io')(httpsServer);
 // array of objects {p1id: [particle_1_id], p2id: [particle_2_id]} storing connections between particles
 let connections = [];
 
-// dictionary of arrays of line drawing objects{x1: [x1], y1: [y1], x2: [x2], y2: [y2], col: [hsb-color-hue] shade: [hsb-color-brightness], weight: [line-weight]}
+// dictionary of arrays of line drawing objects {x1: [x1], y1: [y1], x2: [x2], y2: [y2], col: [hsb-color-hue] shade: [hsb-color-brightness], weight: [line-weight]}
 // dictionary key: room code, value: array of lines
 let whiteboardStrokes = {};
 
@@ -38,7 +38,6 @@ let users = {};
 let rooms = {};
 
 // Register a callback function to run when we have an individual connection
-// This is run for each individual user that connects
 io.sockets.on('connection', 
 	// We are given a websocket object in our function
 	function (socket) {
@@ -73,28 +72,32 @@ io.sockets.on('connection',
 
         });
 
+        // emits to room each time a particle is added to the system, once per user upon join
+        // param data: particle obj
         socket.on('add-particle', function(data) {
-            users[socket.id] = {particle: data, id: data.id, muted: false};
+            users[socket.id] = {particle: data, id: data.id, muted: false}; // updates user with particle
             console.log('adding particle to: ' + rooms[socket.id]);
-            socket.to(rooms[socket.id]).emit('add-particle', {particle: data, sid: socket.id});
+            socket.to(rooms[socket.id]).emit('add-particle', {particle: data, sid: socket.id}); // emits particle and socket id
             
         });
 
+        // relays mouse messages (particles dragging) to socket room
+        // param data: user particle id
         socket.on('mouse-on', function(data) {
             socket.to(rooms[socket.id]).emit('mouse-on', data);
         })
         socket.on('mouse-off', function(data) {
             socket.to(rooms[socket.id]).emit('mouse-off', data);
         })
-        socket.on('mouse-move', function(data) {
+        socket.on('mouse-move', function(data) { // param data: {id: [user particle id], x: [user mouseX], y: [user mouseY]}
             socket.to(rooms[socket.id]).emit('mouse-move', data);
         })
         
-
+        // relays simplepeers connection messages
         socket.on('signal', (to, from, data) => {
             console.log("SIGNAL");
             if (users[to]) {
-                console.log("Found Peer, sending signal");
+                // sends signal to peer
                 io.to(to).emit('signal', to, from, data);
 
             } else {
@@ -102,15 +105,20 @@ io.sockets.on('connection',
             }
         });
 
+        // emits to room each time a particle connection is made
+        // param data: {p1id: [particle 1 id], p2id: [particle 2 id]}
         socket.on('particle-connection', function(data) {
-            console.log('connecting');
-            connections.push(data);
 
-            let pid = users[socket.id].particle.id;
+            connections.push(data); // adds to server data of all connections
+
+            let pid = users[socket.id].particle.id; // gets particle id of initiator
             for(let connection of connections) {
+
+                // iterates through all connections, finds other particle the initiator is connected to, updates mute status of both
                 if(connection.p1id == pid) {
                     for(let sid in users) {
                         if(users[sid].particle.id == connection.p2id) {
+                            
                             io.to(socket.id).emit('user-mute', {sid: sid, val: users[sid].muted});
                             io.to(sid).emit('user-mute', {sid: socket.id, val: users[socket.id].muted});
                             break;
@@ -126,13 +134,20 @@ io.sockets.on('connection',
                     }
                 }
             }
+            
+            // relays particle connection to others in room
             socket.to(rooms[socket.id]).emit('particle-connection', data);
         })
 
+        // emits to room each time user mutes or unmutes, relays to others in room
+        // param data: muted (bool)
         socket.on('user-mute', function(data) {
+
             users[socket.id].muted = data;
 
             let pid = users[socket.id].particle.id;
+
+            // iterates through all connections, finds ALL other particles the initiator is connected to, updates mute status of USER
             for(let connection of connections) {
                 if(connection.p1id == pid) {
                     for(let sid in users) {
@@ -152,25 +167,31 @@ io.sockets.on('connection',
             }
         })
 
+        // relays single drawing stroke to room
+        // param data: {x1: [x1], y1: [y1], x2: [x2], y2: [y2], col: [hsb-color-hue] shade: [hsb-color-brightness], weight: [line-weight]}
         socket.on('whiteboard-stroke', function(data) {
-            whiteboardStrokes[rooms[socket.id]].push(data);
+            whiteboardStrokes[rooms[socket.id]].push(data); // updates server
             socket.to(rooms[socket.id]).emit('whiteboard-stroke', data);
         })
 
+        // relays entire whiteboard of room to user
         socket.on('request-whiteboard', function() {
             console.log('requested whiteboard ');
             socket.emit('request-whiteboard', whiteboardStrokes[rooms[socket.id]]);
         })
 
+        // user disconnects via exit or closing tab
 		socket.on('disconnect', function() {
 			console.log("Client has disconnected " + socket.id);
 
             let particleId;
+            // gets particle id of user, removes from users
             if(users[socket.id]) {
                 particleId = users[socket.id].id;
                 delete users[socket.id];
             }
 
+            // removes all instances of user's particle id from connections
             for(let i = connections.length-1; i >= 0; i--) {
                 let connection = connections[i];
                 if(particleId == connection.p1id || particleId == connection.p2id) {
@@ -178,9 +199,11 @@ io.sockets.on('connection',
                 }
             }
 
+            // emits removal of particle to room, disconnects with simplepeers
             socket.to(rooms[socket.id]).emit('remove-particle', particleId);
             socket.to(rooms[socket.id]).emit('peer-disconnect', socket.id);
 
+            // remove user from rooms
             delete rooms[socket.id];
 		});
 	}
