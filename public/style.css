@@ -1,0 +1,256 @@
+@font-face {
+  font-family: roboto-light;
+  src: url(fonts/Roboto-Light.ttf)
+}
+@font-face {
+  font-family: bubbles;
+  src: url(fonts/ChikiBubbles.ttf)
+}
+@font-face {
+  font-family: roboto-bold;
+  src: url(fonts/Roboto-Black.ttf)
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: bubbles;
+    position: relative;
+}
+
+canvas {
+  display: block;
+  position: absolute;
+  z-index: -1;
+}
+
+.p5Canvas {
+  z-index: -5;
+}
+
+#content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 1;
+}
+  
+.user-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  user-select: none;
+  pointer-events: none;
+
+  transform: scale(0);
+}
+
+h1 {
+  font-size: 6vw;
+  margin-top: 20%;
+  margin-bottom: 5%;
+}
+
+h2 {
+  font-size: 2vw;
+  margin-bottom: 3%;
+  margin-top: 0;
+}
+#login-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 40vw;
+  height: 40vw;
+  border-radius: 50%;
+
+  transform: scale(0);
+}
+
+@keyframes popout {
+  from{transform:scale(0)}
+  60%{transform:scale(1.2)}
+  to{transform:scale(1)}
+}
+
+@keyframes expand {
+  from{transform:scale(1)}
+  30%{transform:scale(0.8); opacity:100}
+  to{transform:scale(15); opacity: 0}
+}
+
+@keyframes fade {
+  from{opacity: 1}
+  to{opacity: 0}
+}
+
+@keyframes shrink {
+  from{transform:scale(1)}
+  to{transform:scale(0)}
+}
+
+#non-title-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  z-index: 1;
+}
+
+#login-name, #login-room, #login-btn {
+  width: 14vw;
+  height: 2.7vw;
+  border: none;
+  border-radius: 1.5vw;
+  padding: 0 1vw;
+  font-family: roboto-light;
+  font-size: 1.4vw;
+  margin-bottom: 2%;
+
+  transition-duration: 0.5s;
+}
+
+#login-btn {
+  width: 16vw;
+  
+  cursor: pointer;
+  /* font-size: 2em; */
+}
+
+input::placeholder {
+  position: relative;
+  bottom: -0.1em;
+}
+
+#controls {
+  position: absolute;
+  top: 0;
+  display: none;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  width: 100%;
+
+
+}
+
+.control-btn {
+  width: 10vh;
+  height: 10vh;
+  border-radius: 50%;
+  margin: 0% 2% 5% 2%;
+  border: none;
+  cursor: pointer;
+  transition-duration: 0.5s;
+
+  transform: scale(0);
+}
+.icon {
+  font-size: 4vh;
+}
+
+#brush-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5% 2%;
+  margin: 2%;
+  border-radius: 3vh;
+
+  transform: scale(0);
+}
+.slider {
+  appearance: none;
+  outline: none;
+  width: 20vh;
+  height: 8px;
+  border-radius: 4px;
+  margin: 10% 0;
+  --sliderSize: 20px;
+  --thumbColor: black;
+  --thumbOutline: black;
+}
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  height: var(--sliderSize);
+  width: var(--sliderSize);
+  background: var(--thumbColor);
+  border: var(--thumbOutline) 2px solid;
+  border-radius: 50%;
+}
+#info-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 2%;
+  border-radius: 3vh;
+
+  opacity: 0;
+}
+#room-key-display {
+  font-family: roboto-light;
+  font-size: 3vh;
+  margin-bottom: 2vh;
+  text-align: right;
+  white-space: pre-wrap;
+}
+#controls-info {
+  width: 6vh;
+  height: 6vh;
+  border-radius: 3vh;
+  border: none;
+  margin: 0;
+  cursor: pointer;
+  transition-duration: 0.5s;
+  position:relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#info-paragraph, #info-icon {
+  transition-duration: 0.25s;
+  opacity: 0;
+  position: absolute;
+}
+
+#info-paragraph {
+  overflow: hidden;
+  height: 80%;
+  margin: 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-direction: column;
+}
+
+#info-paragraph h3 {
+  margin: 0 0 5% 0;
+  font-size: 2.5vh
+}
+
+#info-paragraph ul {
+  font-family: roboto-light;
+  font-size: 1.7vh;
+  padding-left: 10%;
+  margin: 0;
+
+}
+#info-paragraph ul li {
+  margin-bottom: 5%;
+}
+#info-paragraph ul li span {
+  font-family: roboto-bold;
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="simplepeer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hapticdata/toxiclibsjs@0.3.2/build/toxiclibs.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://kit.fontawesome.com/e19675e328.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="script.js"></script>
+    <meta charset="utf-8" />
+
+  </head>
+  <body>
+    <script src="introsketch.js"></script>
+    <script src="sketch.js"></script>
+
+    <main>
+    </main>
+
+    <div id="content">
+      <div id="login-content">
+        <h1 id="title">Bubble Chat</h1>
+        <div id="non-title-content">
+          <h2 id="prompt">Enter your name and room:</h2>
+          <input type="text" placeholder="Name" id="login-name">
+          <input type="text" placeholder="Room Key" id="login-room">
+          <button id="login-btn">Join Chat</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div id="controls">
+      <button class="control-btn" id="tool-btn"><i class="fa-solid fa-hand-pointer icon"></i></button>
+      <button class="control-btn" id="mute-btn"><i class="fa-solid fa-microphone icon"></i></button>
+      <button class="control-btn" id="leave-btn"><i class="fa-solid fa-right-from-bracket icon"></i></button>
+    </div>
+
+    <div id="brush-controls">
+      <input type="range" min="10" max="50" value="20" class="slider" id="brush-size">
+      <input type="range" min="0" max="100" value="80" class="slider" id="brush-col">
+    </div>
+
+    <div id="info-panel">
+      <span id="room-key-display">Room: </span>
+      <div id="controls-info"> <i class="fa-solid fa-info" id="info-icon" style="font-size: 2.5vh"></i> 
+        <div id="info-paragraph">
+          <div>
+            <h3>Pointer Mode:</h3>
+            <ul>
+              <li><span>Click + drag</span> to swing around</li>
+              <li><span>[Shift] + click</span> to freeze bubbles</li>
+              <li><span>Click</span> to connect with other bubbles</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Drawing Mode:</h3>
+            <ul>
+              <li><span>Click + drag</span> draw your color</li>
+              <li><span>[Backspace]</span> to clear your canvas</li>
+            </ul>
+          </div>
+        </div> 
+      </div>
+    </div>
+
+    <video id="myvideo" width="640" height="480" muted hidden></video>  
+    <canvas id="usercanvas" class='user-video' width="640" height="480"></canvas>
+  </body>
+</html>
