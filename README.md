@@ -7,6 +7,11 @@ Edward Zhou 10/2023
 
 ---
 
+
+https://github.com/edwardszhou/bubble-chat/assets/123663456/9e603d98-0d70-443b-92d2-080ba4aa36db
+
+
+---
 **Description:**  
 Bubble Chat is an interactive and creative play on common video conferencing apps such as Zoom, Google Meet, FaceTime, etc. The app assigns a random, unique color to each user upon launch that serves as the visual palette.
 The app allows users to join separate rooms with user-specified room keys. Within the rooms, users exist as bubbles with their video that can be moved around via mouse drag, which simulates a spring pulling on the user's video. 
