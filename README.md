@@ -1,6 +1,7 @@
 # Bubble Chat
 
-Interactive Video Conferencing for Creatives
+Interactive Video Conferencing for Creatives  
+
 Live at https://esz7923.imany.io/
 
 Edward Zhou 10/2023
