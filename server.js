@@ -7,18 +7,18 @@ app.get('/', function (req, res) {
 
 });
 
-
-const https = require('https');
+const http = require('http');
+// const https = require('https');
 const fs = require('fs'); // Using the filesystem module
 
-const credentials = {
-  key: fs.readFileSync('/etc/letsencrypt/live/esz7923.imany.io/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/esz7923.imany.io/fullchain.pem')
-};
+// const credentials = {
+//   key: fs.readFileSync('/etc/letsencrypt/live/esz7923.imany.io/privkey.pem'),
+//   cert: fs.readFileSync('/etc/letsencrypt/live/esz7923.imany.io/fullchain.pem')
+// };
 
-const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(443, () => {
-        console.log('server has started on port 443')
+const httpServer = http.createServer(app);
+httpServer.listen(8030, 'localhost', () => {
+        console.log('server has started on port 8030')
     });
 
 var io = require('socket.io')(httpsServer);
