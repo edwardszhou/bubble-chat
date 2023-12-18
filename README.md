@@ -28,7 +28,7 @@ creativity possible between people while also providing full functionality in vi
 explore as well.
  
 **Process:**  
-Bubble chat is a web application based on a Node.js server running on Express. The primary visual medium for the application is p5.js, which uses the toxiclibs.js library for soft body physics. Movement around the canvas is determined
+Bubble Chat is a web application based on a Node.js server running on Express. The primary visual medium for the application is p5.js, which uses the toxiclibs.js library for soft body physics. Movement around the canvas is determined
 in the p5 toxiclibs physics world, which connects to external HTML elements to make the video call functionality. Video-to-video call is implemented using SimplePeers and socket.io. Socket.io also controls all of the server-side
 information storage and distribution such as users, user connections, user interactions, whiteboards, etc. The whiteboard is also created in p5.js using a separate p5 canvas.
 
