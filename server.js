@@ -21,7 +21,7 @@ httpServer.listen(8030, 'localhost', () => {
         console.log('server has started on port 8030')
     });
 
-var io = require('socket.io')(httpsServer);
+var io = require('socket.io')(httpServer);
 
 // array of objects {p1id: [particle_1_id], p2id: [particle_2_id]} storing connections between particles
 let connections = [];
